@@ -1,0 +1,118 @@
+<template>
+    <div class="recommend">
+      <!-- <scroll class="recommend-content" > -->
+        <!-- <div> -->
+            <div class="wrapper" ref="wrapper">
+                <div class="content">
+       <!-- 轮播 -->
+           <div class="swiper-container slide">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" v-for="itme in slider" :key="itme.key"><img :src="itme.picUrl" width="100%"></div>
+            </div>
+            <div class="swiper-pagination"></div>
+           </div>
+           <!-- <h1>这是推荐的页面</h1> -->
+           <div class="recommend-list">
+            <h2 class="list-title">热门歌曲推荐</h2>
+            <ul>
+                <li class="itme" v-for="itme in songList" :key="itme.key">
+                    <div class="icon"><img :src="itme.picUrl"></div>
+                    <div class="text"></div>
+                    <h3 v-text="itme.songListAuthor"></h3>
+                    <p v-text="itme.songListDesc"></p>
+                </li>
+            </ul> 
+           </div>
+           </div>
+           </div>
+        <!-- </div> -->
+      <!-- </scroll> -->
+    </div>
+</template>
+
+<script>
+    import Swiper from 'swiper'
+    import 'swiper/dist/css/swiper.css'
+    import {gtRecommend} from '@/api'
+    // import Scroll from '@/components/scroll'
+    import Bscroll from 'better-scroll'
+export default {
+    data(){
+        return {
+            slider:[],
+            songList:[]
+        }
+    },
+    components:{
+        Swiper,
+        // Scroll
+        // swiperSlide
+    },
+    created() {
+        this.getRecommendData();
+        // this.getdata();
+    },
+    methods: {
+        //获取接口
+        getRecommendData(){
+            getRecommend().then(res =>{
+                console.log(res)
+                this.slider = res.data.slider
+                this.songList = res.data.songList
+            })
+        }
+    },
+    //挂载之前去实例化swiper
+    mounted() {
+        var slide = new Swiper('.slide',{
+            pagination:{
+                el:'.swiper-pagination'
+            },
+            observer:true,
+            observeParents:true,
+        })
+        this.$nextTick(()=>{
+            this.scroll = new Bscroll(this.$refs.wrapper,{})
+        })
+    },
+}
+</script>
+
+<style lang="less" scoped>
+@import '~@/common/less/variable.less';
+.recommend{
+    position: flxed;
+    width: 100%;
+    top: 88px;
+    bottom: 0;
+    .recommend-content{
+        height: 100%;
+        overflow: hidden;
+    }
+    .recommend-list{
+        h2{
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            font-size: @font-size-medium-x;
+            color: @color-theme;
+        }
+        .itme{
+            display: flex;
+            box-sizing: border-box;
+            padding: 0 20px 20px 20px;
+            padding-right: 20px;
+            .icon{
+                flex: 0 0 60px;
+                width: 60px;
+                height: 60px;
+                padding-right: 20px;
+                img{
+                    width: 60px;
+                    height: 60px;
+                }
+            }
+        }
+    }
+}
+</style>
