@@ -13,7 +13,7 @@
     "axios": "^0.18.0",
     "js-base64": "^2.5.1",
     "lc-lyric-parser": "^1.0.0",
-    "swiper": "^4.5.0",
+    "swiper": "^6.5.1",
     "vue": "^2.5.2",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
